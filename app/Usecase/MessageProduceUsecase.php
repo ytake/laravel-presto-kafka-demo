@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Usecase;
 
-use App\Definition\Analyze;
+use App\Definition\AnalysisDefinition;
 use App\Foundation\Producer\Producer;
 
 /**
@@ -25,9 +25,9 @@ class MessageProduceUsecase
     }
 
     /**
-     * @param Analyze $analyze
+     * @param AnalysisDefinition $analyze
      */
-    public function run(Analyze $analyze)
+    public function run(AnalysisDefinition $analyze)
     {
         $this->producer->produce($analyze);
     }

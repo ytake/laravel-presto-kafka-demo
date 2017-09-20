@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Listeners;
 
-use App\Definition\Analyze;
+use App\Definition\AnalysisDefinition;
 use App\Events\Loggable;
 use App\Usecase\MessageProduceUsecase;
 use Ramsey\Uuid\Uuid;
@@ -32,7 +32,7 @@ class LoggableHandler
     public function handle(Loggable $loggable)
     {
         $this->usecase->run(
-            new Analyze(Uuid::uuid4()->toString(), $loggable->uri(), $loggable->name())
+            new AnalysisDefinition(Uuid::uuid4()->toString(), $loggable->uri(), $loggable->name())
         );
     }
 }

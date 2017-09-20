@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Repository;
+namespace App\DataAccess;
 
 use App\Foundation\Presto\AnalysisMapper;
 use App\Foundation\Presto\PrestoClient;
 
 /**
- * Class AnalysisRepository
+ * Class Analysis
  */
-final class AnalysisRepository
+final class Analysis
 {
     /** @var PrestoClient */
     protected $client;

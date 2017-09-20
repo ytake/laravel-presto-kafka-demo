@@ -3,24 +3,24 @@ declare(strict_types=1);
 
 namespace App\Usecase;
 
-use App\Repository\AnalysisRepository;
+use App\DataAccess\Analysis;
 
 /**
  * Class UserAnalysisUsecase
  */
 class UserAnalysisUsecase
 {
-    /** @var AnalysisRepository */
-    protected $repository;
+    /** @var Analysis */
+    protected $source;
 
     /**
      * UserAnalysisUsecase constructor.
      *
-     * @param AnalysisRepository $repository
+     * @param Analysis $source
      */
-    public function __construct(AnalysisRepository $repository)
+    public function __construct(Analysis $source)
     {
-        $this->repository = $repository;
+        $this->source = $source;
     }
 
     /**
@@ -28,6 +28,6 @@ class UserAnalysisUsecase
      */
     public function run(): array
     {
-        return $this->repository->findAll();
+        return $this->source->findAll();
     }
 }

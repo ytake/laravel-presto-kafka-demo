@@ -6,9 +6,9 @@ namespace App\Definition;
 use App\Foundation\Producer\AbstractProduceDefinition;
 
 /**
- * Class Analyze
+ * Class AnalysisDefinition
  */
-final class Analyze extends AbstractProduceDefinition
+final class AnalysisDefinition extends AbstractProduceDefinition
 {
     /** @var string */
     private $uuid;
@@ -20,7 +20,7 @@ final class Analyze extends AbstractProduceDefinition
     private $name;
 
     /**
-     * Analyze constructor.
+     * AnalysisDefinition constructor.
      *
      * @param string $uuid
      * @param string $uri
