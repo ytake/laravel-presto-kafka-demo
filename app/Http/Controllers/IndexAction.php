@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Events\Loggable;
-use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -14,15 +12,12 @@ use Illuminate\View\View;
 final class IndexAction extends Controller
 {
     /**
-     * @param Dispatcher $dispatcher
-     * @param Request    $request
+     * @param Request $request
      *
      * @return View
      */
-    public function __invoke(Dispatcher $dispatcher, Request $request): View
+    public function __invoke(Request $request): View
     {
-        $dispatcher->dispatch(new Loggable($request->getUri()));
-
         return view('welcome');
     }
 }

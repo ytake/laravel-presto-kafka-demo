@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Usecase;
+namespace App\DataAccess;
 
 use App\Definition\AnalysisDefinition;
 use App\Foundation\Producer\Producer;
 
 /**
- * Class MessageProduceUsecase
+ * Class LogProduce
  */
-class MessageProduceUsecase
+final class LogProduce
 {
     /** @var Producer */
     protected $producer;

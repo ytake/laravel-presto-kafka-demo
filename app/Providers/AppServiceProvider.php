@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Console\InitRedisCommand;
 use App\Foundation\Producer\Producer;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
@@ -19,7 +20,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->app->bind('app.command.init.redis', function (Application $app) {
+            return new InitRedisCommand($app['redis']);
+        });
+
+        $this->commands([
+            'app.command.init.redis'
+        ]);
     }
 
     /**

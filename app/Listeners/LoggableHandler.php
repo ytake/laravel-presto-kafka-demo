@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Listeners;
 
+use App\DataAccess\LogProduce;
 use App\Definition\AnalysisDefinition;
 use App\Events\Loggable;
-use App\Usecase\MessageProduceUsecase;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -13,17 +13,17 @@ use Ramsey\Uuid\Uuid;
  */
 class LoggableHandler
 {
-    /** @var MessageProduceUsecase */
-    protected $usecase;
+    /** @var LogProduce */
+    protected $producer;
 
     /**
      * LoggableHandler constructor.
      *
-     * @param MessageProduceUsecase $usecase
+     * @param LogProduce $producer
      */
-    public function __construct(MessageProduceUsecase $usecase)
+    public function __construct(LogProduce $producer)
     {
-        $this->usecase = $usecase;
+        $this->producer = $producer;
     }
 
     /**
@@ -31,7 +31,7 @@ class LoggableHandler
      */
     public function handle(Loggable $loggable)
     {
-        $this->usecase->run(
+        $this->producer->run(
             new AnalysisDefinition(Uuid::uuid4()->toString(), $loggable->uri(), $loggable->name())
         );
     }

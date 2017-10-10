@@ -15,6 +15,8 @@ final class Loggable
     private $names = [
         'presto',
         'kafka',
+        'laravel',
+        'elasticsearch',
     ];
 
     /**

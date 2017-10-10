@@ -1,0 +1,23 @@
+ip: 192.168.10.10
+memory: 4096
+cpus: 1
+hostname: gardening
+name: laravel-presto-example
+authorize: ~/.ssh/id_rsa.pub
+keys:
+    - ~/.ssh/id_rsa
+folders:
+    -
+        map: ./
+        to: /home/vagrant/laravel-presto-example
+sites:
+    -
+        map: gardening.app
+        to: /home/vagrant/laravel-presto-example/public
+elasticsearch: true
+fluentd: false
+mongodb: false
+couchbase: false
+
+databases:
+    - testing

@@ -1,0 +1,25 @@
+{
+    "tableName": "action",
+    "schemaName": "analyze",
+    "topicName": "analyze.action",
+    "message": {
+        "dataFormat": "json",
+        "fields": [
+            {
+                "name": "uuid",
+                "mapping": "uuid",
+                "type": "VARCHAR"
+            },
+            {
+                "name": "uri",
+                "mapping": "uri",
+                "type": "VARCHAR"
+            },
+            {
+                "name": "name",
+                "mapping": "name",
+                "type": "VARCHAR"
+            }
+        ]
+    }
+}

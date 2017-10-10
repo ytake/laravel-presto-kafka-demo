@@ -78,6 +78,6 @@ class Producer
             $conf->set($key, $item);
         }
 
-        return new KAfkaProducer($conf);
+        return new KafkaProducer($conf);
     }
 }
