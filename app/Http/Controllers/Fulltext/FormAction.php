@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Fulltext;
 
-use App\Usecase\UserAnalysisUsecase;
+use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Factory as ViewFactory;
 
 /**
- * Class AnalyzeAction
+ * Class FormAction
  */
-final class AnalyzeAction extends Controller
+final class FormAction extends Controller
 {
     /** @var ViewFactory */
     private $view;
@@ -26,12 +26,10 @@ final class AnalyzeAction extends Controller
     }
 
     /**
-     * @param UserAnalysisUsecase $usecase
-     *
      * @return View
      */
-    public function __invoke(UserAnalysisUsecase $usecase): View
+    public function __invoke(): View
     {
-        return $this->view->make('analysis', ['analysis' => $usecase->run()]);
+        return $this->view->make('fulltext.form', []);
     }
 }

@@ -32,8 +32,7 @@ final class Analysis
         $query = "SELECT redttt._key, redttt._value, test_id, test_name, created_at, uri, uuid 
               FROM my_tests.testing.tests AS myttt 
               INNER JOIN red_tests.test.string AS redttt ON redttt._key = myttt.test_name 
-              INNER JOIN kafka_tests.analyze.action AS kafkataa ON kafkataa.name = myttt.test_name
-              WHERE myttt.test_name = 'presto'";
+              INNER JOIN kafka_tests.analyze.action AS kafkataa ON kafkataa.name = myttt.test_name";
         return $this->client->query($query, AnalysisMapper::class);
     }
 }

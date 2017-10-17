@@ -24,7 +24,7 @@ class UserAnalysisUsecase
     }
 
     /**
-     * @return \App\Foundation\Presto\AnalysisMapper[]|array
+     * @return \App\Foundation\Presto\AnalysisMapper[]\array
      */
     public function run(): array
     {

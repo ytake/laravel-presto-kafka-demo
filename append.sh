@@ -39,7 +39,7 @@ rm -rf presto-server-0.185.tar.gz
 
 chown -R vagrant:vagrant presto-server-0.185
 cp -r /home/vagrant/laravel-presto-example/presto/etc/ /home/vagrant/presto-server-0.185/etc
-./presto-server-0.185/bin/launcher restart
+/home/vagrant/presto-server-0.185/bin/launcher restart
 
 # install presto-cli
 wget https://repo1.maven.org/maven2/com/facebook/presto/presto-cli/0.185/presto-cli-0.185-executable.jar
@@ -52,6 +52,16 @@ chown -R vagrant:vagrant presto
 # elasticsearch
 
 echo "network.host: 0.0.0.0" > "/etc/elasticsearch/elasticsearch.yml"
+sudo sed -i "s|-Xms2g|-Xms1g|g" /etc/elasticsearch/jvm.options
+sudo sed -i "s|-Xms2g|-Xms1g|g" /etc/elasticsearch/jvm.options
 sudo systemctl restart elasticserach
 
 sudo confluent start
+
+# elasticsearch connect
+
+sudo sed -i "s|topics=test-elasticsearch-sink|topics=fulltext.register|g" /etc/kafka-connect-elasticsearch/quickstart-elasticsearch.properties
+
+sudo kafka-avro-console-producer --broker-list localhost:9092 --topic fulltext.register \
+--property value.schema='{"type":"record","name":"fulltext.register","fields":[{"name":"uuid","type":"string"},{"name":"text","type":"string"}]}'
+sudo connect-standalone -daemon /etc/schema-registry/connect-avro-standalone.properties /etc/kafka-connect-elasticsearch/quickstart-elasticsearch.properties

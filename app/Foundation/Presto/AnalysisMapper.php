@@ -14,7 +14,7 @@ class AnalysisMapper
     /** @var string */
     private $_value;
 
-    /** @var string */
+    /** @var int */
     private $test_id;
 
     /** @var string */
@@ -28,4 +28,60 @@ class AnalysisMapper
 
     /** @var string */
     private $uuid;
+
+    /**
+     * @return string
+     */
+    public function getKey(): string
+    {
+        return $this->_key;
+    }
+
+    /**
+     * @return string
+     */
+    public function getValue(): string
+    {
+        return $this->_value;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTestId(): int
+    {
+        return $this->test_id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTestName(): string
+    {
+        return $this->test_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreatedAt(): string
+    {
+        return $this->created_at;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUri(): string
+    {
+        return $this->uri;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuid(): string
+    {
+        return $this->uuid;
+    }
 }

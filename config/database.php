@@ -48,10 +48,10 @@ return [
             'password' => env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
+            'collation' => 'utf8mb4_bin',
             'prefix' => '',
             'strict' => true,
-            'engine' => null,
+            'engine' => 'innoDB',
         ],
 
         'pgsql' => [
@@ -112,7 +112,7 @@ return [
             'host' => env('REDIS_HOST', '127.0.0.1'),
             'password' => env('REDIS_PASSWORD', null),
             'port' => env('REDIS_PORT', 6379),
-            'database' => 0,
+            'database' => 10,
         ],
 
     ],

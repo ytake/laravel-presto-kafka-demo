@@ -14,8 +14,22 @@ class RouteServiceProvider extends ServiceProvider
     {
         //
         $router->group(['middleware' => 'web'], function (Router $router) {
-            $router->get('/', ['uses' => 'App\Http\Controllers\IndexAction', 'as' => 'index']);
-            $router->get('/analysis', ['uses' => 'App\Http\Controllers\AnalyzeAction', 'as' => 'analyze']);
+            $router->get('/', [
+                'uses' => 'App\Http\Controllers\IndexAction',
+                'as'   => 'index',
+            ]);
+            $router->get('/analysis', [
+                'uses' => 'App\Http\Controllers\AnalyzeAction',
+                'as'   => 'analysis',
+            ]);
+            $router->get('/fulltext/form', [
+                'uses' => 'App\Http\Controllers\Fulltext\FormAction',
+                'as'    => 'fulltext.form',
+            ]);
+            $router->post('/fulltext/register', [
+                'uses' => 'App\Http\Controllers\Fulltext\RegisterAction',
+                'as'    => 'fulltext.register',
+            ]);
         });
     }
 }

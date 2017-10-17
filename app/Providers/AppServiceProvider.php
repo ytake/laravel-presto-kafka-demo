@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Console\InitRedisCommand;
+use App\DataAccess\LogProduce;
+use App\DataAccess\RegisterProduce;
 use App\Foundation\Producer\Producer;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
@@ -25,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->commands([
-            'app.command.init.redis'
+            'app.command.init.redis',
         ]);
     }
 
@@ -36,12 +38,22 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(Producer::class, function (Application $app) {
-            $kafkaConfig = $app['config']->get('kafka');
-            $topic = $kafkaConfig['topics']['analyze.action'];
+        $this->app->when(LogProduce::class)
+            ->needs(Producer::class)
+            ->give(function (Application $app) {
+                $kafkaConfig = $app['config']->get('kafka');
+                $topic = $kafkaConfig['topics']['analyze.action'];
 
-            return new Producer($topic['topic'], $topic['brokers'], $topic['options']);
-        });
+                return new Producer($topic['topic'], $topic['brokers'], $topic['options']);
+            });
+        $this->app->when(RegisterProduce::class)
+            ->needs(Producer::class)
+            ->give(function (Application $app) {
+                $kafkaConfig = $app['config']->get('kafka');
+                $topic = $kafkaConfig['topics']['fulltext.register'];
+
+                return new Producer($topic['topic'], $topic['brokers'], $topic['options']);
+            });
 
         $this->app->bind(ClientSession::class, function (Application $app) {
             $prestoConfig = $app['config']->get('presto');
