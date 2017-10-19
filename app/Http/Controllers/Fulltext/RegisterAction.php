@@ -7,7 +7,8 @@ use App\DataAccess\RegisterProduce;
 use App\Definition\FulltextDefinition;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FulltextRequest;
-use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -15,27 +16,35 @@ use Ramsey\Uuid\Uuid;
  */
 final class RegisterAction extends Controller
 {
-    /** @var FulltextRequest */
-    private $request;
-
     /** @var RegisterProduce */
     private $registerProduce;
+
+    /** @var Redirector */
+    private $redirector;
 
     /**
      * RegisterAction constructor.
      *
-     * @param FulltextRequest $request
+     * @param RegisterProduce $registerProduce
+     * @param Redirector      $redirector
      */
-    public function __construct(FulltextRequest $request, RegisterProduce $registerProduce)
+    public function __construct(RegisterProduce $registerProduce, Redirector $redirector)
     {
-        $this->request = $request;
         $this->registerProduce = $registerProduce;
+        $this->redirector = $redirector;
     }
 
-    public function __invoke()
+    /**
+     * @param FulltextRequest $request
+     *
+     * @return RedirectResponse
+     */
+    public function __invoke(FulltextRequest $request): RedirectResponse
     {
         $this->registerProduce->run(
-            new FulltextDefinition(Uuid::uuid4()->toString(), "aaaaaaaaa")
+            new FulltextDefinition(Uuid::uuid4()->toString(), $request->get('fulltext'))
         );
+
+        return $this->redirector->route('fulltext.index');
     }
 }

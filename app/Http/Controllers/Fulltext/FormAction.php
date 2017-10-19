@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Fulltext;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 use Illuminate\View\Factory as ViewFactory;
 
 /**

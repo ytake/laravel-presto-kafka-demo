@@ -12,8 +12,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map(Router $router)
     {
-        //
-        $router->group(['middleware' => 'web'], function (Router $router) {
+        $router->group(['middleware' => ['web']], function (Router $router) {
             $router->get('/', [
                 'uses' => 'App\Http\Controllers\IndexAction',
                 'as'   => 'index',
@@ -29,6 +28,10 @@ class RouteServiceProvider extends ServiceProvider
             $router->post('/fulltext/register', [
                 'uses' => 'App\Http\Controllers\Fulltext\RegisterAction',
                 'as'    => 'fulltext.register',
+            ]);
+            $router->get('/fulltext', [
+                'uses' => 'App\Http\Controllers\Fulltext\IndexAction',
+                'as'    => 'fulltext.index',
             ]);
         });
     }

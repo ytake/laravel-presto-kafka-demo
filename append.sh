@@ -46,22 +46,25 @@ wget https://repo1.maven.org/maven2/com/facebook/presto/presto-cli/0.185/presto-
 mv presto-cli-0.185-executable.jar presto
 chmod 755 presto
 chown -R vagrant:vagrant presto
+sudo ./presto-server-0.185/bin/launcher start
 ./presto --server 127.0.0.1:8080
-
 
 # elasticsearch
 
-echo "network.host: 0.0.0.0" > "/etc/elasticsearch/elasticsearch.yml"
+echo "network.host: 0.0.0.0" >> "/etc/elasticsearch/elasticsearch.yml"
 sudo sed -i "s|-Xms2g|-Xms1g|g" /etc/elasticsearch/jvm.options
-sudo sed -i "s|-Xms2g|-Xms1g|g" /etc/elasticsearch/jvm.options
-sudo systemctl restart elasticserach
-
+sudo sed -i "s|-Xmx2g|-Xmx1g|g" /etc/elasticsearch/jvm.options
+sudo systemctl restart elasticsearch
 sudo confluent start
 
 # elasticsearch connect
 
 sudo sed -i "s|topics=test-elasticsearch-sink|topics=fulltext.register|g" /etc/kafka-connect-elasticsearch/quickstart-elasticsearch.properties
 
-sudo kafka-avro-console-producer --broker-list localhost:9092 --topic fulltext.register \
---property value.schema='{"type":"record","name":"fulltext.register","fields":[{"name":"uuid","type":"string"},{"name":"text","type":"string"}]}'
-sudo connect-standalone -daemon /etc/schema-registry/connect-avro-standalone.properties /etc/kafka-connect-elasticsearch/quickstart-elasticsearch.properties
+cp /home/vagrant/laravel-presto-example/kafka/connect-standalone.properties /etc/schema-registry/connect-standalone.properties
+cp /home/vagrant/laravel-presto-example/kafka/elasticsearch-connect.properties /etc/kafka-connect-elasticsearch/elasticsearch-connect.properties
+
+sudo connect-standalone -daemon /etc/schema-registry/connect-standalone.properties /etc/kafka-connect-elasticsearch/elasticsearch-connect.properties
+sudo confluent load elasticsearch-sink
+
+# https://github.com/confluentinc/kafka-connect-elasticsearch/blob/master/docs/elasticsearch_connector.rst
