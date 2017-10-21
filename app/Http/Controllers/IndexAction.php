@@ -16,7 +16,7 @@ final class IndexAction extends Controller
     private $view;
 
     /**
-     * AnalyzeAction constructor.
+     * IndexAction constructor.
      *
      * @param ViewFactory $view
      */

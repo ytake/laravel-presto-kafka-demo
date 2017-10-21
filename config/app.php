@@ -175,6 +175,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ElasticsearchServiceProvider::class,
+        App\Providers\DomainServiceProvider::class,
+        App\Providers\ConsoleServiceProvider::class,
     ],
 
     /*
@@ -191,5 +193,4 @@ return [
     'aliases' => [
         'Schema' => Illuminate\Support\Facades\Schema::class,
     ],
-
 ];

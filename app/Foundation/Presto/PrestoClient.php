@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Foundation\Presto;
 
+use Ytake\PrestoClient\FixData;
 use Ytake\PrestoClient\ClientSession;
 use Ytake\PrestoClient\ResultsSession;
 use Ytake\PrestoClient\StatementClient;
@@ -27,11 +28,10 @@ class PrestoClient
 
     /**
      * @param string $query
-     * @param string $mapClass
      *
      * @return array
      */
-    public function query(string $query, string $mapClass): array
+    public function query(string $query): array
     {
         $result = [];
         $client = new StatementClient($this->session, $query);
@@ -39,9 +39,9 @@ class PrestoClient
         $yieldResult = $resultSession->execute()->yieldResults();
         /** @var \Ytake\PrestoClient\QueryResult $row */
         foreach ($yieldResult as $row) {
-            foreach ($row->yieldObject($mapClass) as $object) {
-                if ($object instanceof $mapClass) {
-                    $result[] = $object;
+            foreach ($row->yieldData() as $yieldRow) {
+                if ($yieldRow instanceof FixData) {
+                    $result[] = $yieldRow;
                 }
             }
         }

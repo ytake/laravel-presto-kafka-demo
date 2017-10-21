@@ -11,7 +11,7 @@ use Ramsey\Uuid\Uuid;
 /**
  * Class LoggableHandler
  */
-class LoggableHandler
+final class LoggableHandler
 {
     /** @var LogProduce */
     protected $producer;

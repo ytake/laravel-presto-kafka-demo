@@ -3,19 +3,19 @@ declare(strict_types=1);
 
 namespace App\DataAccess;
 
-use Acme\Blog\Entity\EntryCriteria;
+use Acme\Analysis\Entity\AnalysisCriteria;
 use App\Foundation\Elasticsearch\ElasticseachClient;
 
 /**
- * Class FulltextIndex
+ * Class LogIndex
  */
-class FulltextIndex implements EntryCriteria
+class LogIndex implements AnalysisCriteria
 {
     /** @var ElasticseachClient */
     protected $client;
 
     /** @var string */
-    protected $index = 'fulltext.register';
+    protected $index = 'log.index';
 
     /**
      * FulltextIndex constructor.
@@ -33,26 +33,27 @@ class FulltextIndex implements EntryCriteria
     public function all(): array
     {
         $result = $this->client->client()->search([
-            "index"  => $this->index,
-            'type'   => 'kafka-connect',
-            "body"   => [
+            'index' => $this->index,
+            'type'  => 'logs',
+            "size" => 50,
+            'body'  => [
                 "query" => [
-                    "match_all" => new \stdClass(),
+                    'match_all' => new \stdClass(),
+                ],
+                'sort'  => [
+                    'created_at' => [
+                        'order' => 'desc',
+                    ],
                 ],
             ],
         ]);
         $map = [];
         if (count($result)) {
-            foreach($result['hits']['hits'] as $hit) {
+            foreach ($result['hits']['hits'] as $hit) {
                 $map[] = $hit['_source'];
             }
         }
 
         return $map;
-    }
-
-    public function queryBy(string $string)
-    {
-        // TODO: Implement queryBy() method.
     }
 }

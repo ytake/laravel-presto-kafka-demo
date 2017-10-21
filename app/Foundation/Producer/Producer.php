@@ -57,6 +57,14 @@ class Producer
     }
 
     /**
+     * @param LoggerInterface $logger
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
+    /**
      * @return ProducerTopic
      */
     protected function producerTopic(): ProducerTopic

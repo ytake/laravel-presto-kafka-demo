@@ -3,21 +3,20 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Fulltext;
 
-use App\DataAccess\RegisterProduce;
-use App\Definition\FulltextDefinition;
+use App\Events\SinkConnect;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FulltextRequest;
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
-use Ramsey\Uuid\Uuid;
 
 /**
  * Class RegisterAction
  */
 final class RegisterAction extends Controller
 {
-    /** @var RegisterProduce */
-    private $registerProduce;
+    /** @var Dispatcher */
+    private $dispatcher;
 
     /** @var Redirector */
     private $redirector;
@@ -25,12 +24,12 @@ final class RegisterAction extends Controller
     /**
      * RegisterAction constructor.
      *
-     * @param RegisterProduce $registerProduce
-     * @param Redirector      $redirector
+     * @param Dispatcher $dispatcher
+     * @param Redirector $redirector
      */
-    public function __construct(RegisterProduce $registerProduce, Redirector $redirector)
+    public function __construct(Dispatcher $dispatcher, Redirector $redirector)
     {
-        $this->registerProduce = $registerProduce;
+        $this->dispatcher = $dispatcher;
         $this->redirector = $redirector;
     }
 
@@ -41,8 +40,9 @@ final class RegisterAction extends Controller
      */
     public function __invoke(FulltextRequest $request): RedirectResponse
     {
-        $this->registerProduce->run(
-            new FulltextDefinition(Uuid::uuid4()->toString(), $request->get('fulltext'))
+        // 登録処理後に実行されるevent
+        $this->dispatcher->dispatch(
+            new SinkConnect(strval($request->get('fulltext')))
         );
 
         return $this->redirector->route('fulltext.index');

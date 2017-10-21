@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Foundation\Presto;
+namespace App\DataAccess;
 
 /**
  * Class AnalysisMapper
@@ -83,5 +83,21 @@ class AnalysisMapper
     public function getUuid(): string
     {
         return $this->uuid;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            '_key' => $this->_key,
+            '_value' => $this->_value,
+            'test_id' => $this->test_id,
+            'test_name' => $this->test_name,
+            'created_at' => $this->created_at,
+            'uri' => $this->uri,
+            'uuid' => $this->uuid,
+        ];
     }
 }

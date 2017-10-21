@@ -14,7 +14,7 @@
                     <th>kafka.log.uri</th>
                     <th>kafka.log.uuid</th>
                 </tr>
-                @foreach($analysis as $row)
+                @foreach($list as $row)
                     <tr>
                         <td>
                             {{ $row->getKey() }}
