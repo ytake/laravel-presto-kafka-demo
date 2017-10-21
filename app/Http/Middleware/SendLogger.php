@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Events\Loggable;
 use Closure;
-use Illuminate\Contracts\Events\Dispatcher;
+use App\Events\Loggable;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\Events\Dispatcher;
 
 /**
  * Class SendLogger
