@@ -32,6 +32,8 @@ class Consumer
     /** @var int */
     protected $offset = RD_KAFKA_OFFSET_STORED;
 
+    protected $callable;
+
     /**
      * Consumer constructor.
      *
@@ -83,6 +85,7 @@ class Consumer
                 switch ($message->err) {
                     case RD_KAFKA_RESP_ERR_NO_ERROR:
                         call_user_func($callable, $message);
+                        $this->outputMessage($message);
                         break;
                     case RD_KAFKA_RESP_ERR__TIMED_OUT:
                         throw new \RuntimeException("time out.");
@@ -91,6 +94,24 @@ class Consumer
                         break;
                 }
             }
+        }
+    }
+
+    /**
+     * @param callable $callable
+     */
+    public function callbackMessage(callable $callable)
+    {
+        $this->callable = $callable;
+    }
+
+    /**
+     * @param Message $message
+     */
+    protected function outputMessage(Message $message)
+    {
+        if ($this->callable) {
+            call_user_func_array($this->callable, [$message]);
         }
     }
 

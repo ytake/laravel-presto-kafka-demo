@@ -6,6 +6,7 @@ namespace App\Console;
 use App\Foundation\Consumer\Consumable;
 use App\Foundation\Consumer\Consumer;
 use Illuminate\Console\Command;
+use RdKafka\Message;
 
 /**
  * Class ConsumerCommand
@@ -48,6 +49,9 @@ class ConsumerCommand extends Command
     public function handle()
     {
         $this->consumer->topic($this->topic);
+        $this->consumer->callbackMessage(function (Message $message) {
+            $this->info($message->payload);
+        });
         $this->consumer->handle($this->consumable);
     }
 }

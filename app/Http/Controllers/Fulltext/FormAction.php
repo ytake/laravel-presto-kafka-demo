@@ -4,32 +4,23 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Fulltext;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Contracts\View\View;
-use Illuminate\View\Factory as ViewFactory;
+use App\Http\Responders\HtmlResponder;
+use Illuminate\Http\Response;
 
 /**
  * Class FormAction
  */
 final class FormAction extends Controller
 {
-    /** @var ViewFactory */
-    private $view;
-
     /**
-     * AnalyzeAction constructor.
+     * @param HtmlResponder $responder
      *
-     * @param ViewFactory $view
+     * @return \Illuminate\Http\Response
      */
-    public function __construct(ViewFactory $view)
+    public function __invoke(HtmlResponder $responder): Response
     {
-        $this->view = $view;
-    }
+        $responder->template('fulltext.form');
 
-    /**
-     * @return View
-     */
-    public function __invoke(): View
-    {
-        return $this->view->make('fulltext.form', []);
+        return $responder->emit();
     }
 }

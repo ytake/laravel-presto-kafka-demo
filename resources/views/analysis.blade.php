@@ -14,7 +14,7 @@
                     <th>kafka.log.uri</th>
                     <th>kafka.log.uuid</th>
                 </tr>
-                @foreach($list as $row)
+                @forelse ($list as $row)
                     <tr>
                         <td>
                             {{ $row->getKey() }}
@@ -35,7 +35,15 @@
                             {{ $row->getUuid() }}
                         </td>
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="6">
+                            <pre>
+                            $ php artisan kafka:consumer
+                            </pre>
+                        </td>
+                    </tr>
+                @endforelse
             </table>
         </div>
     </div>

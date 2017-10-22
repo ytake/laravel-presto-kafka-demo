@@ -3,35 +3,25 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use Illuminate\Contracts\View\View;
+use App\Http\Responders\HtmlResponder;
 use Illuminate\Http\Request;
-use Illuminate\View\Factory as ViewFactory;
+use Illuminate\Http\Response;
 
 /**
  * Class IndexAction
  */
 final class IndexAction extends Controller
 {
-    /** @var ViewFactory */
-    private $view;
-
     /**
-     * IndexAction constructor.
+     * @param Request       $request
+     * @param HtmlResponder $responder
      *
-     * @param ViewFactory $view
+     * @return \Illuminate\Http\Response
      */
-    public function __construct(ViewFactory $view)
+    public function __invoke(Request $request, HtmlResponder $responder): Response
     {
-        $this->view = $view;
-    }
+        $responder->template('welcome');
 
-    /**
-     * @param Request $request
-     *
-     * @return View
-     */
-    public function __invoke(Request $request): View
-    {
-        return $this->view->make('welcome');
+        return $responder->emit();
     }
 }

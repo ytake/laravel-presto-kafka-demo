@@ -1,14 +1,17 @@
 @extends('layout.default')
 @section('content')
     <h1>Example Laravel with Kafka Connect Elasticsearch</h1>
-    <div class="flex-center position-ref full-height">
+    <div class="flex-center position-ref">
         <div class="content">
+            <div class="links m-b-md">
+                <a href="{{ route('fulltext.form') }}">Example Note Register</a>
+            </div>
             <table>
                 <tr>
                     <th>elasticsearch.uuid</th>
                     <th>elasticsearch.note</th>
                 </tr>
-                @foreach($list as $row)
+                @forelse ($list as $row)
                     <tr>
                         <td>
                             {{ $row->getUuid() }}
@@ -17,7 +20,13 @@
                             {{ $row->getNote() }}
                         </td>
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="2">
+                            no notes
+                        </td>
+                    </tr>
+                @endforelse
             </table>
         </div>
     </div>

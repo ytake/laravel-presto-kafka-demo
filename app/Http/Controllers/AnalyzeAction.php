@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 
 use Acme\Analysis\Specification\ActiveAnalysisSpecification;
 use Acme\Analysis\Usecase\UserAnalysisUsecase;
-use App\DataAccess\LogIndex;
-use Illuminate\Contracts\View\View;
-use Illuminate\View\Factory as ViewFactory;
+use App\Http\Responders\HtmlResponder;
+use Illuminate\Http\Response;
 
 /**
  * Class AnalyzeAction
@@ -20,32 +19,29 @@ final class AnalyzeAction extends Controller
     /** @var UserAnalysisUsecase */
     private $usecase;
 
-    /** @var ViewFactory */
-    private $view;
-
     /**
      * AnalyzeAction constructor.
      *
      * @param ActiveAnalysisSpecification $specification
      * @param UserAnalysisUsecase         $usecase
-     * @param ViewFactory                 $view
      */
     public function __construct(
         ActiveAnalysisSpecification $specification,
-        UserAnalysisUsecase $usecase,
-        ViewFactory $view
+        UserAnalysisUsecase $usecase
     ) {
         $this->specification = $specification;
         $this->usecase = $usecase;
-        $this->view = $view;
     }
 
     /**
-     * @return View
+     * @param HtmlResponder $responder
+     *
+     * @return \Illuminate\Http\Response
      */
-    public function __invoke(): View
+    public function __invoke(HtmlResponder $responder): Response
     {
-        return $this->view->make('analysis', [
+        $responder->template('analysis');
+        return $responder->emit([
             'list' => $this->usecase->run($this->specification),
         ]);
     }

@@ -10,6 +10,7 @@
   "require": {
     "php": ">=7.0.0",
     "ext-rdkafka": "*",
+    "cakephp/chronos": "^1.1",
     "elasticsearch/elasticsearch": "~5.0",
     "fideloper/proxy": "~3.3",
     "laravel/framework": "5.5.*",
@@ -57,6 +58,12 @@
     "post-autoload-dump": [
       "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
       "@php artisan package:discover"
+    ],
+    "project-setup": [
+      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+      "@php artisan key:generate",
+      "@php artisan migrate --seed",
+      "@php artisan init:redis"
     ]
   },
   "config": {

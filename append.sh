@@ -60,19 +60,3 @@ sudo sed -i "s|topics=test-elasticsearch-sink|topics=fulltext.register|g" /etc/k
 
 cp /home/vagrant/laravel-presto-kafka-demo/kafka/connect-standalone.properties /etc/schema-registry/connect-standalone.properties
 cp /home/vagrant/laravel-presto-kafka-demo/kafka/elasticsearch-connect.properties /etc/kafka-connect-elasticsearch/elasticsearch-connect.properties
-
-sudo connect-standalone -daemon /etc/schema-registry/connect-standalone.properties /etc/kafka-connect-elasticsearch/elasticsearch-connect.properties
-sudo confluent load elasticsearch-sink
-
-# https://github.com/confluentinc/kafka-connect-elasticsearch/blob/master/docs/elasticsearch_connector.rst
-
-curl -XPUT "$SELF_IP:9200/log.index/_mapping/logs?pretty" -H 'Content-Type: application/json' -d'
-{
-  "properties": {
-    "created_at": {
-      "type":     "text",
-      "fielddata": true
-    }
-  }
-}
-'

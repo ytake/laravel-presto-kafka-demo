@@ -6,8 +6,8 @@ namespace App\Http\Controllers\Fulltext;
 use Acme\Blog\Specification\ActiveEntrySpecification;
 use Acme\Blog\Usecase\RetrieveEntryUsecase;
 use App\Http\Controllers\Controller;
-use Illuminate\Contracts\View\View;
-use Illuminate\View\Factory as ViewFactory;
+use App\Http\Responders\HtmlResponder;
+use Illuminate\Http\Response;
 
 /**
  * Class IndexAction
@@ -20,33 +20,31 @@ final class IndexAction extends Controller
     /** @var RetrieveEntryUsecase */
     private $usecase;
 
-    /** @var ViewFactory */
-    private $view;
-
     /**
      * IndexAction constructor.
      *
      * @param ActiveEntrySpecification $specification
      * @param RetrieveEntryUsecase     $usecase
-     * @param ViewFactory              $view
      */
     public function __construct(
         ActiveEntrySpecification $specification,
-        RetrieveEntryUsecase $usecase,
-        ViewFactory $view
+        RetrieveEntryUsecase $usecase
     ) {
         $this->specification = $specification;
         $this->usecase = $usecase;
-        $this->view = $view;
     }
 
     /**
-     * @return View
+     * @param HtmlResponder $responder
+     *
+     * @return Response
      */
-    public function __invoke(): View
+    public function __invoke(HtmlResponder $responder): Response
     {
-        return $this->view->make('fulltext.index', [
-            'list' => $this->usecase->run($this->specification)
+        $responder->template('fulltext.index');
+
+        return $responder->emit([
+            'list' => $this->usecase->run($this->specification),
         ]);
     }
 }

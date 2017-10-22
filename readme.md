@@ -2,7 +2,7 @@
 
 ## Usage
 
-動作デモを確認する場合は `vagrant` をお使いください
+動作を確認する場合は `vagrant` をお使いください
 
 ### デモ環境の起動  
 
@@ -18,11 +18,18 @@ vagrantの環境が起動したら、下記コマンドで仮想サーバにア�
 $ vagrant ssh
 ```
 
-次に Kafka Connect Elasticsearchを起動させます
+仮想サーバログイン後、次のコマンドでプロジェクトのディレクトリに移動してください
 
 ```bash
-$ sudo connect-standalone -daemon /etc/schema-registry/connect-standalone.properties /etc/kafka-connect-elasticsearch/elasticsearch-connect.properties
-$ sudo confluent load elasticsearch-sink
+$ cd laravel-presto-kafka-demo
+```
+
+次に Kafka Connect Elasticsearchの起動と、Elasticsearchのindexの設定などを行います。  
+
+これらは下記のコマンドを実行してください
+
+```bash
+[vagrant@gardening:~/laravel-presto-kafka-demo] $ ./bin/init.sh
 ```
 
 上記のコマンドで、指定のtopicに格納されたメッセージは、  
@@ -33,23 +40,16 @@ Elasticsearchのindex (fulltext.register) に挿入されます。
 Redis, MySQL, Kafkaに格納されたデータをアクセスログ出力時に    
 Elasticsearchに格納するデモが含まれています。  
 
-これを利用する場合は、次のコマンドを実行して初期データ投入を行なってください。
-
-*vagrant sshで仮想サーバにアクセスしてから実行します*
+これを利用する場合は、プロジェクト配下で次のcomposerコマンドを実行して初期データ投入を行なってください。
 
 ```bash
-# データベース作成とデモデータ投入
-$ php artisan migrate --seed
-
-# Redisにデモデータ投入
-$ php artisan init:redis
+# データベース作成とデモデータ投入、Redisにデモデータ投入
+[vagrant@gardening:~/laravel-presto-kafka-demo] $ composer project-setup
 ```
 
 次にKafka Consumerを起動してください  
 
-supervisorに登録するとdaemonとして動作しますが(vagrantにインストール済み)、  
-
-デモの動作確認はコンソール上で起動 でも良いです
+supervisorに登録するとdaemonとして動作しますが(vagrantにインストール済み)、コンソールで起動しても構いません
 
 ```bash
 $ php artisan kafka:consumer
@@ -63,21 +63,25 @@ Elasticsearchに格納されます
 
 ## uri
 
+### Application
+http://192.168.10.10 or gardening.app
+
 ### presto
 http://192.168.10.10:8080
 
 ### elasticsearch
 http://192.168.10.10:9200
 
+### elasticsearch indices
+http://192.168.10.10:9200/_cat/indices?v&pretty
+
 ## Kafka Connect Elasticsearch
 
 [confluentinc/kafka-connect-elasticsearch](https://github.com/confluentinc/kafka-connect-elasticsearch)
 
-```bin
-$ connect-standalone /etc/schema-registry/connect-avro-standalone.properties /etc/kafka-connect-elasticsearch/quickstart-elasticsearch.properties
-```
+## Confluent 
 
-## Confluent
+Directories
 
 ```
 /usr/bin/                  # Confluent CLI and individual driver scripts for starting/stopping services, prefixed with <package> names
